@@ -14,15 +14,15 @@ class MyHomePage extends StatefulWidget {
 class _DoseItem {
   const _DoseItem(
     this.index,
-    this.title,
-    this.subtitle,
-    this.color,
+    this.date,
+    this.foodDirection,
+    this.medicinesDetail,
   );
 
   final int index;
-  final String title;
-  final String subtitle;
-  final Color color;
+  final String date;
+  final String foodDirection;
+  final List<String> medicinesDetail;
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -31,9 +31,16 @@ class _MyHomePageState extends State<MyHomePage> {
     20,
     (i) => _DoseItem(
           i,
-          'Tile n°$i',
-          'Fuck Off',
-          Colors.blue,
+          '2019-12-01',
+          'No Direction',
+          [
+            '1 Tab Crocin Cold N Flue 03/19',
+            '1 Tab Crocin Cold N Flue 03/19',
+            '1 Tab Crocin Cold N Flue 03/19',
+            '1 Tab Crocin Cold N Flue 03/19',
+            '1 Tab Crocin Cold N Flue 03/19',
+            '1 Tab Crocin Cold N Flue 03/19',
+          ],
         ),
   );
 
@@ -62,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final _DoseItem item = items[index];
 
     return Slidable.builder(
-      key: Key(item.title),
+      key: Key(item.index.toString()),
       controller: slidableController,
       direction: direction,
       dismissal: SlidableDismissal(
@@ -79,25 +86,57 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
       actionPane: SlidableBehindActionPane(),
-      actionExtentRatio: 0.25,
+      actionExtentRatio: 0.15,
       child: VerticalListItem(items[index]),
       secondaryActionDelegate: SlideActionBuilderDelegate(
-          actionCount: 1,
+          actionCount: 3,
           builder: (context, index, animation, renderingMode) {
-            return IconSlideAction(
-              color: renderingMode == SlidableRenderingMode.slide
-                  ? Color(0xFF93B16A).withOpacity(animation.value)
-                  : Color(0xFF93B16A),
-              iconWidget: Text(
-                'Taken',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
+            if (index == 0) {
+              return IconSlideAction(
+                color: renderingMode == SlidableRenderingMode.slide
+                    ? Color(0xff3bac30).withOpacity(animation.value)
+                    : Color(0xff3bac30),
+                iconWidget: Text(
+                  'Taken',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              onTap: () => _showSnackBar(context, 'More'),
-              closeOnTap: false,
-            );
+                onTap: () => _showSnackBar(context, 'More'),
+                closeOnTap: false,
+              );
+            } else if (index == 1) {
+              return IconSlideAction(
+                color: renderingMode == SlidableRenderingMode.slide
+                    ? Color(0xfff8bc45).withOpacity(animation.value)
+                    : Color(0xfff8bc45),
+                iconWidget: Text(
+                  'Late',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () => _showSnackBar(context, 'More'),
+                closeOnTap: false,
+              );
+            } else {
+              return IconSlideAction(
+                color: renderingMode == SlidableRenderingMode.slide
+                    ? Color(0xffff8c8c).withOpacity(animation.value)
+                    : Color(0xffff8c8c),
+                iconWidget: Text(
+                  'Missed',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () => _showSnackBar(context, 'More'),
+                closeOnTap: false,
+              );
+            }
           }),
     );
   }
@@ -116,7 +155,7 @@ class VerticalListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ExpansionTile(
-        title: Text('Head'),
+        title: Text(item.date),
         children: <Widget>[
           Container(
             child: Text('Body'),
